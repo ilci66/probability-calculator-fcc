@@ -22,19 +22,29 @@ class Hat:
       for x in range(v):
         self.contents.append(k)
   
-  def draw(self, numOfBalls):
-    if numOfballs > len(self.contents):
-      return self.contents
+  # def draw(self, number):
+  #   if number > len(self.contents):
+  #     return self.contents
+  #   for x in range(number):
+  #     self.contents.remove(random.choice(self.contents))
+  #   return self.contents
 
+  def draw(self, number):
+    allPopped = []
+    if number > len(self.contents):
+      return self.contents
+    for x in range(number):
+      popped  = self.contents.pop(random.randint(0,len(newhat.contents)))
+      allPopped.append(popped)
+    return allPopped
 
 
 def experiment(hat, expected_balls, num_balls_drawn, num_experiments):
-  def getstff():
-    print('stff')
 
-
-newhat = Hat(red=2, blue=4)
-print(newhat.contents)
-
+# with every draw done check if the allpopped list contains, if so add one to count and the divide the count to num_experiments
   
 
+
+
+hat = Hat(black=6, red=4, green=3)
+print(hat.contents)
