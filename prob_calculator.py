@@ -2,68 +2,43 @@ import copy
 import random
 
 class Hat: 
-  
   def __init__(self, **colors):
     self.contents = []
     for k,v in colors.items():
       for x in range(v):
         self.contents.append(k)
-
-  def draw(self, number):
-    allPopped = []
-    if number > len(self.contents):
-      return self.contents
-    for x in range(number):
-      popped  = self.contents.pop(random.randint(0,len(self.contents)-1))
-      allPopped.append(popped)
-    return allPopped
-
+  # used this instead of pop, works as intended
+  def draw(self, num_balls):
+    if num_balls > len(self.contents):
+        return self.contents
+    balls = []
+    for i in range(num_balls):
+        random_ball = random.randint(0,(len(self.contents)-1))
+        balls.append(self.contents[random_ball])
+        self.contents.remove(self.contents[random_ball])
+    return balls
 
 def experiment(hat, expected_balls, num_balls_drawn, num_experiments):
 
-  expected_balls_copy = copy.deepcopy(expected_balls)
-  hat_copy = copy.deepcopy(hat)
-  gotten_balls = hat_copy.draw(num_balls_drawn) 
-
-  
-
   count = 0
-  wantedballs = []
-  for k,v in expected_balls_copy.items():
-    print(str(k),v, range(v))
-    for i in range(int(v)):
-      wantedballs.append(k)
+  mid_count = 0
 
   for i in range(num_experiments):
     expected_balls_copy = copy.deepcopy(expected_balls)
     hat_copy = copy.deepcopy(hat)
-    gotten_balls = hat_copy.draw(num_balls_drawn)
+    gotten_balls = hat_copy.draw(num_balls_drawn) 
+  
+    for color in gotten_balls:
+      # print(color)
+      if color in expected_balls_copy:
+        # print(expected_balls_copy[color])
+        expected_balls_copy[color] -= 1
 
-    # for x in range(len(wantedballs)):
-# implement this logic here out of time for today
-# fruits1 = ['Mango','orange','jackfruit']
-# fruits2 = ['Mango','orange',]
-# # new_list=  all(item in fruits1 for item in fruits2)
-# # if new_list is True:
-# #     print("True")    
-# # else :
-# #     print("False")
-# count = 0
-# for x in range(len(fruits2)):
-#   if fruits2[0] in fruits1:
-#     print("yep")
-#     fruits2.remove(fruits2[0])
-#   if len(fruits2) == 0:
-#     count += 1 
-
-# print(fruits2, count)
-
-  # for i in range(num_experiments):
-  #   check = all(item in wantedballs for item in hat.contents)
-  #   if check:
-  #     count += 1
-
+    if all(x <= 0 for x in expected_balls_copy.values()):
+      count += 1
+    
   return count / num_experiments
 
-hat = Hat(black=6, red=4, green=3)
-print(hat.contents)
+
+# hat = Hat(black=6, red=4, green=3)
+# print(hat.contents)
